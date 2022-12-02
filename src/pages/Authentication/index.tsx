@@ -1,5 +1,7 @@
 import { useContext } from "react";
+import Animation from "../../components/Animation";
 import { MetaMaskContext } from "../../hooks/useMetamask";
+import { Button } from "@mui/material";
 
 const Authentication = () => {
     // @ts-ignore
@@ -24,14 +26,12 @@ const Authentication = () => {
                 </div>
               </div>
             ) : (
-              <p>Please connect to metamask :)</p>
+              <Animation uri="https://assets3.lottiefiles.com/packages/lf20_UJNc2t.json"/>
             )}
             {isConnected ? (
               <p className="info">🎉 Connected Successfully</p>
             ) : (
-              <button className="btn" onClick={connectWallet}>
-                Connect
-              </button>
+              <Button variant="contained" onClick={connectWallet}>Start Application</Button>
             )}
           </div>
         ) : (
