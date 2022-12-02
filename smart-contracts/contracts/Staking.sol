@@ -21,14 +21,12 @@ contract Staking is MYNFT {
         admin = msg.sender;
     }
 
-    // user => exerciseID => StakingDetails
     mapping(address => mapping(uint256 => StakingDetails[])) public stakingDetails;
     
     modifier onlyOwnerPersonal() {
         require(admin == msg.sender, "Only owner can change it");
         _;
     }
-
 
     function stakeMaticForExercise(uint256 _exerciseID, uint256 _target) public payable{
         require(msg.value > 0, "Amount should be greater than 0");
@@ -49,8 +47,6 @@ contract Staking is MYNFT {
     }
 
     function rewardMaticForExercise(uint256 exerciseID, address userAddr) external returns (uint256){
-        // can be executed only once
-        // TODO -> create session kind of requirement so that user cannot access the same route.
         if(stakingDetails[userAddr][exerciseID].length > 0){
             require(stakingDetails[userAddr][exerciseID][stakingDetails[userAddr][exerciseID].length - 1].isCompleted == false, "Already rewarded");
         }
@@ -70,18 +66,16 @@ contract Staking is MYNFT {
             uint256 tokenId = getCurrentID();
             transferFrom(admin, userAddr, tokenId);
             payable(userAddr).transfer(amountStaked);
-           
-            // return tokenId;
         } else {
-            // todo -> SAFE USE
+            // todo -> SAFE USE FOR LOW RISK
             uint256 amountToCut = amountStaked/4;
+
+            // getting the amount for the gas we are paying
             rewardPool = rewardPool + amountToCut;
             payable(userAddr).transfer(amountStaked-amountToCut);
-            // return type(uint256).min;
         }
     }
 
-    // function that returns owner 
     function getOwner() public view returns (address) {
         return admin;
     }
