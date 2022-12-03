@@ -3,9 +3,10 @@ pragma solidity ^0.8.9;
 
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
-import "./MyNFT.sol";
+// import "./MyNFT.sol";
+import "./revise-nft.sol";
 
-contract Staking is MYNFT {
+contract Staking is ReviseNFT {
     address public admin;
     uint256 public rewardPool;
     
@@ -60,7 +61,7 @@ contract Staking is MYNFT {
         stakingDetails[userAddr][exerciseID].push(StakingDetails(stakingDetails[userAddr][exerciseID][stakingDetails[userAddr][exerciseID].length-1].amount, stakingDetails[userAddr][exerciseID][stakingDetails[userAddr][exerciseID].length-1].target, stakingDetails[userAddr][exerciseID][stakingDetails[userAddr][exerciseID].length-1].targetDone, true, block.timestamp));
 
         if(st.targetDone >= st.target) {
-            safeMint(userAddr);
+            mint(userAddr);
             // uint256 tokenId = getCurrentID();
             // transferFrom(admin, userAddr, tokenId);
             payable(userAddr).transfer(amountStaked);
