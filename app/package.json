@@ -80,6 +80,7 @@
     "ts-pnp": "1.2.0",
     "typescript": "^3.7.7",
     "url-loader": "4.1.1",
+    "web3": "^1.8.1",
     "webpack": "4.44.2",
     "webpack-dev-server": "3.11.1",
     "webpack-manifest-plugin": "2.2.0",

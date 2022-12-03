@@ -8,6 +8,7 @@ import "./MyNFT.sol";
 contract Staking is MYNFT {
     address public admin;
     uint256 public rewardPool;
+    
 
     struct StakingDetails {
         uint amount;
@@ -31,46 +32,40 @@ contract Staking is MYNFT {
     function stakeMaticForExercise(uint256 _exerciseID, uint256 _target) public payable{
         require(msg.value > 0, "Amount should be greater than 0");
         require(_target > 5, "Target should be greater than 5");
-
+    
         if(stakingDetails[msg.sender][_exerciseID].length > 0){
             require(stakingDetails[msg.sender][_exerciseID][stakingDetails[msg.sender][_exerciseID].length - 1].isCompleted == true, "Previous staking is not completed");
         }
-        payable(address(this)).transfer(msg.value);
+
         stakingDetails[msg.sender][_exerciseID].push(StakingDetails(msg.value, _target, 0, false, block.timestamp));
     }
 
-    function updateTargetDone(uint256 _exerciseID, uint256 _targetDone, address _userAddr) public onlyOwnerPersonal {
-        if(stakingDetails[_userAddr][_exerciseID].length > 0){
-            require(block.timestamp - stakingDetails[_userAddr][_exerciseID][stakingDetails[_userAddr][_exerciseID].length - 1].stakeDay < 1 days, "You cant update after 1 day");
-        }
-        stakingDetails[_userAddr][_exerciseID][stakingDetails[_userAddr][_exerciseID].length-1].targetDone += _targetDone;
+    function updateTargetDone(uint256 _exerciseID, uint256 _targetDone, address _userAddr) public  {
+        require(stakingDetails[_userAddr][_exerciseID].length > 0, "No staking found");
+        require(stakingDetails[_userAddr][_exerciseID][stakingDetails[_userAddr][_exerciseID].length - 1].isCompleted == false, "Staking is already completed");
+        require(block.timestamp - stakingDetails[_userAddr][_exerciseID][stakingDetails[_userAddr][_exerciseID].length - 1].stakeDay < 1 days, "You cant update after 1 day");
+        
+        stakingDetails[_userAddr][_exerciseID].push(StakingDetails(stakingDetails[_userAddr][_exerciseID][stakingDetails[_userAddr][_exerciseID].length-1].amount, stakingDetails[_userAddr][_exerciseID][stakingDetails[_userAddr][_exerciseID].length-1].target, stakingDetails[_userAddr][_exerciseID][stakingDetails[_userAddr][_exerciseID].length-1].targetDone+_targetDone, false, block.timestamp));
     }
 
-    function rewardMaticForExercise(uint256 exerciseID, address userAddr, address _charityAddr) external returns (uint256){
-        if(stakingDetails[userAddr][exerciseID].length > 0){
-            require(stakingDetails[userAddr][exerciseID][stakingDetails[userAddr][exerciseID].length - 1].isCompleted == false, "Already rewarded");
-        }
+    function rewardMaticForExercise(uint256 exerciseID, address userAddr, address _charityAddr) public {
+        require(stakingDetails[userAddr][exerciseID].length > 0, "No staking found");
+        require(stakingDetails[userAddr][exerciseID][stakingDetails[userAddr][exerciseID].length - 1].isCompleted == false, "Already rewarded");
 
         StakingDetails memory st = stakingDetails[userAddr][exerciseID][stakingDetails[userAddr][exerciseID].length - 1];
 
-
         uint256 amountStaked = st.amount;
-        uint256 target = st.target;
-        uint256 targetDone = st.targetDone;
-        st.isCompleted = true;
+        // st.isCompleted = true;
+
+        stakingDetails[userAddr][exerciseID].push(StakingDetails(stakingDetails[userAddr][exerciseID][stakingDetails[userAddr][exerciseID].length-1].amount, stakingDetails[userAddr][exerciseID][stakingDetails[userAddr][exerciseID].length-1].target, stakingDetails[userAddr][exerciseID][stakingDetails[userAddr][exerciseID].length-1].targetDone, true, block.timestamp));
 
         if(st.targetDone >= st.target) {
-            uint256 amountPerTarget = amountStaked / target;
-
-            safeMint(admin);
-            uint256 tokenId = getCurrentID();
-            transferFrom(admin, userAddr, tokenId);
+            safeMint(userAddr);
+            // uint256 tokenId = getCurrentID();
+            // transferFrom(admin, userAddr, tokenId);
             payable(userAddr).transfer(amountStaked);
         } else {
-            // todo -> SAFE USE FOR LOW RISK
             uint256 amountToCut = amountStaked/4;
-
-            // getting the amount for the gas we are paying
             rewardPool = rewardPool + amountToCut;
             payable(userAddr).transfer(amountStaked-amountToCut);
             payable(_charityAddr).transfer(amountToCut*9/10);

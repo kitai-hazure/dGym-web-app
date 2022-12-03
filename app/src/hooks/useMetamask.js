@@ -1,6 +1,5 @@
 import React, {createContext, useEffect, useState, useReducer} from 'react';
 import {ethers} from 'ethers';
-
 export const MetaMaskContext = createContext ({});
 
 const MetaMaskProvider = props => {
@@ -13,7 +12,6 @@ const MetaMaskProvider = props => {
   const provider = new ethers.providers.Web3Provider (window.ethereum);
 
   useEffect (() => {
-    // @ts-ignore
     const {ethereum} = window;
     const checkMetamaskAvailability = async () => {
       if (!ethereum) {
@@ -38,7 +36,8 @@ const MetaMaskProvider = props => {
       setAccountBalance (bal);
       setIsConnected (true);
     } catch (error) {
-      setIsConnected (false);
+      console.log("ERR: ", error);
+      // setIsConnected (false);
     }
   };
   return (
@@ -49,6 +48,7 @@ const MetaMaskProvider = props => {
         accountBalance,
         isConnected,
         connectWallet,
+        provider,
       }}
     >
       {props.children}
