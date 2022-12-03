@@ -35,7 +35,7 @@ contract Staking is MYNFT {
         if(stakingDetails[msg.sender][_exerciseID].length > 0){
             require(stakingDetails[msg.sender][_exerciseID][stakingDetails[msg.sender][_exerciseID].length - 1].isCompleted == true, "Previous staking is not completed");
         }
-        
+        payable(address(this)).transfer(msg.value);
         stakingDetails[msg.sender][_exerciseID].push(StakingDetails(msg.value, _target, 0, false, block.timestamp));
     }
 
@@ -46,7 +46,7 @@ contract Staking is MYNFT {
         stakingDetails[_userAddr][_exerciseID][stakingDetails[_userAddr][_exerciseID].length-1].targetDone += _targetDone;
     }
 
-    function rewardMaticForExercise(uint256 exerciseID, address userAddr) external returns (uint256){
+    function rewardMaticForExercise(uint256 exerciseID, address userAddr, address _charityAddr) external returns (uint256){
         if(stakingDetails[userAddr][exerciseID].length > 0){
             require(stakingDetails[userAddr][exerciseID][stakingDetails[userAddr][exerciseID].length - 1].isCompleted == false, "Already rewarded");
         }
@@ -73,6 +73,7 @@ contract Staking is MYNFT {
             // getting the amount for the gas we are paying
             rewardPool = rewardPool + amountToCut;
             payable(userAddr).transfer(amountStaked-amountToCut);
+            payable(_charityAddr).transfer(amountToCut*9/10);
         }
     }
 
@@ -94,5 +95,15 @@ contract Staking is MYNFT {
         require(stakingDetails[_userAddr][_exerciseID].length > 0, "No staking details found");
         StakingDetails memory st = stakingDetails[_userAddr][_exerciseID][stakingDetails[_userAddr][_exerciseID].length - 1];
         return st.targetDone;
+    }
+
+    function getGasCompensation() external onlyOwnerPersonal {
+        require(rewardPool > 0, "No reward pool found");
+        payable(admin).transfer(rewardPool);
+        rewardPool = 0;
+    }
+
+    function getContractBalance() external onlyOwnerPersonal view returns (uint256) {
+        return address(this).balance;
     }
 }
