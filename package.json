@@ -6,6 +6,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@ethersproject/providers": "^5.7.2",
+    "@lottiefiles/react-lottie-player": "^3.4.9",
     "@material-ui/core": "^4.12.4",
     "@mui/material": "^5.10.16",
     "@tensorflow-models/knn-classifier": "^1.2.4",
