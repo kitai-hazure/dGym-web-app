@@ -32,6 +32,7 @@ const MetaMaskProvider = props => {
       });
       let balance = await provider.getBalance (accounts[0]);
       let bal = ethers.utils.formatEther (balance);
+      
       setAccountAddress (accounts[0]);
       setAccountBalance (bal);
       setIsConnected (true);

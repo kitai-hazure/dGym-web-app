@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import MetaMaskProvider from "./hooks/useMetamask";
+
 ReactDOM.render(
   <React.StrictMode>
     <MetaMaskProvider>

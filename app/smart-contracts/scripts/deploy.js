@@ -30,6 +30,10 @@ async function main() {
   const Staking = await ethers.getContractFactory("Staking");
   const staking = await Staking.deploy();
 
+  // const Pushh = await ethers.getContractFactory("Push");
+  // const pushh = await Pushh.deploy();
+
+  // console.log("PUSH Address: ", pushh.address);
   console.log("Staking address:", staking.address);
 }
 

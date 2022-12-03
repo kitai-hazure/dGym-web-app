@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 import { MetaMaskContext } from "../../hooks/useMetamask";
 import staker from "../../services/dgymContract";
 import web3 from "../../services/web3";
-
+import runNFT from "../../services/revise/level";
 const Dashboard = () => {
     console.log("sTAKER: ", staker);
     // @ts-ignore
@@ -29,6 +29,19 @@ const Dashboard = () => {
         const tx = await staker.methods.rewardMaticForExercise(exerciseID, userAddress, charityAddress).send({
             from: userAddress,
         });
+        
+        // const image = await runNFT();
+        // console.log("IMAGE: ",image);
+    //     const member = await revise.fetchNFT('2172115f-9d08-48d3-ab7f-245c304285c9')
+    //     revise.nft(player)
+    //   .setProperty("level", data.level)
+    //   .setProperty("offense", data.offense)
+    //   .setProperty("defense", data.defense)
+    //   .setProperty("stamina", data.stamina)
+    //   .setProperty("skill", data.skill)
+    //   .setImage(data.image)
+    //   .save()
+
         console.log("TX FOR WINNING: ", tx);
         const tokenID = await staker.methods.getCurrentID().call();
 
@@ -60,6 +73,7 @@ const Dashboard = () => {
         const tx = await staker.methods.getOwner().call();
         console.log("TX: ", tx);
     }
+
     return (
         <div>
             <h1>Dashboard</h1>
