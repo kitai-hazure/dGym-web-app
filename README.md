@@ -1,4 +1,4 @@
-# BoostUp (Pose Estimator)
+# ETHIndia 2022 - dGym
 
 ## Overview
 
