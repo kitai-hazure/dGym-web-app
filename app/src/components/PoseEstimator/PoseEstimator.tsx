@@ -294,47 +294,34 @@ export default class PoseEstimator extends React.Component<any, any> {
   }
 
   render() {
-    const {dgym} = this.props;
+    const { dgym } = this.props;
     console.log("DGYM: ", dgym);
     return (
       <div className="pose-visualizer-page">
         {!this.state.loaded && (
-          <section className="loader">Loading Neural Network...</section>
-        )}
-        <div className="picture-button-container">
-          {/* <Select
-            value={this.currentImage}
-            onChange={(ev) => this.loadImageAndRunPosenet(ev.target.value)}
+          <section
+            className="loader"
+            style={{
+              fontSize: 30,
+              fontWeight: "bold",
+            }}
           >
-            {this.picturesToLoad.map((path) => {
-              const name = path.split("/").pop();
-              return (
-                <MenuItem key={name} value={`/img/poses${path}`}>
-                  {name}
-                </MenuItem>
-              );
-            })}
-          </Select> */}
-          {this.videosToLoad.map((videoName, key) => {
-            return (
-              <Button
-                key={key}
-                variant="contained"
-                color="primary"
-                onClick={() =>
-                  this.loadVideoToCanvasAndRunPosenet(`/video/${videoName}`)
-                }
-              >
-                {videoName}
-              </Button>
-            );
-          })}
+            Loading Neural Network...
+          </section>
+        )}
+        <div
+          className="picture-button-container"
+          style={{
+            alignSelf: "center",
+            marginTop: 10,
+          }}
+        >
           <Button
             variant="contained"
-            color="primary"
+            color="default"
             onClick={this.loadWebcamVideoToCanvasAndRunPosenet.bind(this)}
           >
-            Camera
+            Turn On Camera
           </Button>
           {/* <Button variant="contained" color="secondary" onClick={buildDataset}>
             Build dataset
@@ -360,9 +347,9 @@ export default class PoseEstimator extends React.Component<any, any> {
             <div className="preview-container">
               <div className="preview-interaction">
                 <div>
-                  {this.state?.hoveredPoint?.part} -{" "}
+                  {/* {this.state?.hoveredPoint?.part} -{" "}
                   {this.state?.hoveredPoint?.score} - Angle:{" "}
-                  {JSON.stringify(this.state?.hoveredPoint?.angle, null, 2)}
+                  {JSON.stringify(this.state?.hoveredPoint?.angle, null, 2)} */}
                 </div>
               </div>
               <div className="canvas-container">
@@ -385,12 +372,12 @@ export default class PoseEstimator extends React.Component<any, any> {
             </div>
 
             <div>
-              <PoseInfo
+              {/* <PoseInfo
                 title="Action"
                 value={[JSON.stringify(this.state.estimatedAction)]}
-              />
+              /> */}
               <PoseInfo
-                title="Counters"
+                title="Counter"
                 value={[JSON.stringify(this.state.counters)]}
               />
               {/* <FormControlLabel

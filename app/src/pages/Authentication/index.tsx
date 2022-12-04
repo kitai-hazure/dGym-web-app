@@ -1,12 +1,33 @@
-import React from "react";
+import { Button, Typography } from "@material-ui/core";
+import React, { useEffect } from "react";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import Animation from "../../components/Animation/Animation";
 import { MetaMaskContext } from "../../hooks/useMetamask";
 
 const Authentication = () => {
-    // @ts-ignore
-  const {haveMetamask,isConnected,accountAddress,accountBalance,connectWallet} = useContext(MetaMaskContext);
+  // @ts-ignore
+  const {haveMetamask,isConnected,accountAddress,accountBalance,connectWallet,
+  } = useContext(MetaMaskContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isConnected) {
+      navigate("/dashboard");
+    }
+  }, [isConnected, navigate]);
+
   return (
     <div className="App">
+      <h1 style={{
+        color: "white",
+        fontSize: "40px",
+        fontWeight: "bold",
+        fontStyle: "italic",
+        position: "absolute",
+        top: "10%",
+        left: "38%",
+      }}>Welcome to DGym</h1>
       <header className="App-header">
         {haveMetamask ? (
           <div className="App-header">
@@ -25,14 +46,25 @@ const Authentication = () => {
                 </div>
               </div>
             ) : (
-              <p>Please connect to metamask :)</p>
+              <Animation src={require("../../assets/animations/pushup.json")} />
             )}
             {isConnected ? (
-              <p className="info">🎉 Connected Successfully</p>
+              <Animation src={require("../../assets/animations/pushup.json")} />
             ) : (
-              <button className="btn" onClick={connectWallet}>
-                Connect
-              </button>
+              <Button
+                onClick={connectWallet}
+                variant="contained"
+                color="inherit"
+                style={{ marginTop: 25 }}
+              >
+                <Typography
+                  style={{
+                    color: "black",
+                  }}
+                >
+                  Connect Wallet
+                </Typography>
+              </Button>
             )}
           </div>
         ) : (

@@ -1,11 +1,26 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './PoseInfo.css';
+import React from "react";
+import PropTypes from "prop-types";
+import "./PoseInfo.css";
 
 const PoseInfo = (props) => (
-  <div className="PoseInfo" data-testid="PoseInfo">
-    <span>{props.title}:</span>
-    <div className="value-data">{props.value.map((val, key) => <span key={key}>{val}</span> )}</div>
+  <div
+    className="PoseInfo"
+    data-testid="PoseInfo"
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
+    <span style={{
+      textAlign: "center",
+      fontWeight: "bold",
+    }}>{props.title}:</span>
+    <div className="value-data">
+      {props.value.map((val, key) => (
+        <span key={key}>{val}</span>
+      ))}
+    </div>
   </div>
 );
 
@@ -15,7 +30,7 @@ PoseInfo.propTypes = {
 };
 
 PoseInfo.defaultProps = {
-  value: []
+  value: [],
 };
 
 export default PoseInfo;
