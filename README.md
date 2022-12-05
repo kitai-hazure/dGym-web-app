@@ -1,5 +1,8 @@
 # ETHIndia 2022 - dGym
 
+## Notice
+To check push notification integration please move on to branch named "feat/push-notification-integration"
+
 ## Overview
 
 This project created in order to examin the TF abilities on the browser using web workers. 
